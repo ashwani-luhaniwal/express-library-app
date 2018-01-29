@@ -1,14 +1,29 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+// Node middleware for serving a favicon (this is the icon used to represent the site inside the 
+// browser tab, bookmarks, etc.).
+const favicon = require('serve-favicon');
 
-var app = express();
+// An HTTP request logger middleware for node.
+const logger = require('morgan');
+
+// Used to parse the cookie header and populate req.cookies (essentially provides a convenient method 
+// for accessing cookie information).
+const cookieParser = require('cookie-parser');
+
+// This parses the body portion of an incoming HTTP request and makes it easier to extract different 
+// parts of the contained information. For example, you can use this to read POST parameters.
+const bodyParser = require('body-parser');
+
+// These modules/files contain code for handling particular sets of related "routes" (URL paths). 
+// When we extend the skeleton application, for example to list all books in the library, we will add 
+// a new file for dealing with book-related routes.
+const index = require('./routes/index');
+const users = require('./routes/users');
+
+// creates an express app object
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,8 +35,18 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+// use express.static middleware to get express to serve all static files in directory /public
 app.use(express.static(path.join(__dirname, 'public')));
 
+/**
+ * Now that all the other middleware is set up, we add our (previously imported) route-handling code 
+ * to the request handling chain. The imported code will define particular routes for the different 
+ * parts of the site:
+ * 
+ * Note: The paths specified below ('/' and '/users') are treated as a prefix to routes defined in 
+ * the imported files. So for example if the imported users module defines a route for /profile, you 
+ * would access that route at /users/profile. 
+ */
 app.use('/', index);
 app.use('/users', users);
 
