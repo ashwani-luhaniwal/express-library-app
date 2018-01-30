@@ -25,6 +25,21 @@ const users = require('./routes/users');
 // creates an express app object
 const app = express();
 
+// Import mongoose module
+const mongoose = require('mongoose');
+const dev_db_url = 'mongodb://cooluser:coolpassword@ds119748.mlab.com:19748/local_library';
+// set up default mongoose connection
+const mongoDB = process.env.MONGODB_URI || dev_db_url;
+mongoose.connect(mongoDB, {
+  useMongoClient: true
+});
+// get mongoose to use global promise library
+mongoose.Promise = global.Promise;
+// get default connection
+const db = mongoose.connection;
+// bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error: '));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
