@@ -75,3 +75,26 @@ it, use the following command inside your project folder:
 Installing Mongoose adds all its dependencies, including the MongoDB database driver, but it does not 
 install MongoDB itself. If you want to install a MongoDB server then you can download installers from 
 here for various operating systems and install it locally. You can also use cloud-based MongoDB instances.
+
+-----------------------------
+Defining and creating models
+-----------------------------
+Models are defined using the Schema interface. The Schema allows you to define the fields stored in 
+each document along with their validation requirements and default values. In addition, you can define 
+static and instance helper methods to make it easier to work with your data types, and also virtual 
+properties that you can use like any other field, but which aren't actually stored in the database
+
+Schemas are then "compiled" into models using the mongoose.model() method. Once you have a model you 
+can use it to find, create, update, and delete objects of the given type.
+
+Note: Each model maps to a collection of documents in the MongoDB database. The documents will contain 
+the fields/schema types defined in the model Schema.
+
+--------------------------
+Methods and query helpers
+--------------------------
+A schema can also have instance methods, static methods, and query helpers. The instance and static 
+methods are similar, but with the obvious difference that an instance method is associated with a 
+particular record and has access to the current object. Query helpers allow you to extend mongoose's 
+chainable query builder API (for example, allowing you to add a query "byName" in addition to the 
+find(), findOne() and findById() methods).
